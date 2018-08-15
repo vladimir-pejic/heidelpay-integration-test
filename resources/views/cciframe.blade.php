@@ -2,20 +2,17 @@
 
 @section('content')
 
-    @php
-        header('Location: '.$cc->getResponse()->getPaymentFormUrl());
-    @endphp
 
     <div class="container">
         <form method="post" class="formular" id="paymentFrameForm">
-            <?php if ($creditCard->getResponse()->isSuccess()) {
+            <?php if ($cc->getResponse()->isSuccess()) {
 
                 echo '<iframe id="paymentIframe"
-                       src="'.$creditCard->getResponse()->getPaymentFormUrl() . '"
+                       src="'.$cc->getResponse()->getPaymentFormUrl() . '"
                        style="height:250px;">
                        </iframe><br />';
             } else {
-                print_r($creditCard->getResponse()->getError());
+                print_r($cc->getResponse()->getError());
             }?>
             <button type="submit">Submit data</button>
         </form>

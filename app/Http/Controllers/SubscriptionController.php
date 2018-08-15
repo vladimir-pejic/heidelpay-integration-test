@@ -101,8 +101,8 @@ class SubscriptionController extends Controller
 
 
     // Response for stock Heidelpay iframe
-    public function cciframeResponse($_POST) {
-        $heidelpayResponse = new \Heidelpay\PhpPaymentApi\Response($_POST);
+    public function cciframeResponse(Request $request) {
+        $heidelpayResponse = new \Heidelpay\PhpPaymentApi\Response($request->all());
         return $heidelpayResponse;
     }
 
