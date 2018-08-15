@@ -18,9 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::get('cc', function () { return view('cc'); })->name('cc.get');
-//Route::post('/cc', function () { return view('cciframe'); })->name('cc.post');
-Route::get('/cciframe', 'SubscriptionController@cc')->name('cciframe.get');
+// Stock form for Heidelpay
+Route::get('/cciframe', 'SubscriptionController@cciframe')->name('cciframe');
+Route::post('/cciframe/response', 'SubscriptionController@cciframeResponse')->name('cciframe.response');
+
+
+// Custom form for Heidelpay
+Route::get('/cc', function () { return view('cc'); })->name('cc.get');
 Route::post('/cc', 'SubscriptionController@ccPost')->name('cc.post');
 Route::post('/cc/calback', 'SubscriptionController@ccCalback')->name('cc.callback');
 

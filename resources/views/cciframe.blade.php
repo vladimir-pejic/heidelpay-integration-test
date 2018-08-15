@@ -7,15 +7,16 @@
     @endphp
 
     <div class="container">
-        <form method="post" class="formular" id="paymentFrameForm" action="https://test-heidelpay.hpcgw.net/ngw/paymentFrame/sendData"
-              enctype="application/json;charset=UTF-8">
-            <?php
-                if ($cc->getResponse()->isSuccess()) {
-                    echo '<iframe id="paymentIframe" src="' . $cc->getResponse()->getPaymentFormUrl() . '" style="height:250px;"></iframe><br />';
-                } else {
-                    echo '<pre>' . print_r($cc->getResponse()->getError(), 1) . '</pre>';
-                }
-            ?>
+        <form method="post" class="formular" id="paymentFrameForm">
+            <?php if ($creditCard->getResponse()->isSuccess()) {
+
+                echo '<iframe id="paymentIframe"
+                       src="'.$creditCard->getResponse()->getPaymentFormUrl() . '"
+                       style="height:250px;">
+                       </iframe><br />';
+            } else {
+                print_r($creditCard->getResponse()->getError());
+            }?>
             <button type="submit">Submit data</button>
         </form>
     </div>

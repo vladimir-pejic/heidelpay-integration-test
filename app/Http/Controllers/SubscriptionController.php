@@ -29,11 +29,13 @@ class SubscriptionController extends Controller
     }
 
 
-    public function cc() {
+
+
+    // VANILLA HEIDELPAY IFRAME CALL
+    public function cciframe() {
 
         define('HEIDELPAY_PHP_PAYMENT_API_EXAMPLES', true);
-        define('HEIDELPAY_PHP_PAYMENT_API_URL', 'http://'.$_SERVER["HTTP_HOST"]).'/cc';
-//        define('HEIDELPAY_PHP_PAYMENT_API_URL', 'https://dev.heidelpay.de');
+        define('HEIDELPAY_PHP_PAYMENT_API_URL', 'https://dev.heidelpay.de');
         define('HEIDELPAY_PHP_PAYMENT_API_FOLDER', '/vendor/heidelpay/php-payment-api/example/');
 
         $cc = new CreditCardPaymentMethod();
@@ -55,16 +57,15 @@ class SubscriptionController extends Controller
          */
         $cc->getRequest()->async(
             'EN', // Language code for the Frame
-//            'http://'.$_SERVER["HTTP_HOST"] . '/vendor/heidelpay/php-payment-api/example/' . 'HeidelpayResponse.php'  // Response url from your application
-            'https://dev.heidelpay.de/HeidelpayResponse.php'
+            'https://experiments.kompitenz.de/cciframe/response'
         );
 
         /**
          * Set up customer information required for risk checks
          */
         $cc->getRequest()->customerAddress(
-            'dasdad',                  // Given name
-            'TESTER',         // Family name
+            'Kompitenz',                  // Given name
+            'Test',         // Family name
             null,                   // Company Name
             '12344',                   // Customer id of your application
             'Vagerowstr. 18',       // Billing address street
@@ -88,14 +89,8 @@ class SubscriptionController extends Controller
         /**
          * Set necessary parameters for Heidelpay payment Frame and send a registration request
          */
-//        $cc->registration(
-//            HEIDELPAY_PHP_PAYMENT_API_URL, // PaymentFrameOrigin - uri of your application like https://dev.heidelpay.com
-//            'TRUE', // PreventAsyncRedirect - this will tell the payment weather it should redirect the customer or not
-//            HEIDELPAY_PHP_PAYMENT_API_URL . HEIDELPAY_PHP_PAYMENT_API_FOLDER . 'style.css'   // CSSPath - css url to style the Heidelpay payment frame
-//        );
-
         $cc->registration(
-            "http://127.0.0.1:9000", //uri of your application
+            "https://experiments.kompitenz.de/cciframe", //uri of your application
             "FALSE", //PreventAsyncRedirect
             "https://dev.heidelpay.de/style.css" //CSSPath
         );
@@ -103,6 +98,16 @@ class SubscriptionController extends Controller
         return view('cciframe')->with(compact('cc'));
 
     }
+
+
+    // Response for stock Heidelpay iframe
+    public function cciframeResponse($_POST) {
+        $heidelpayResponse = new \Heidelpay\PhpPaymentApi\Response($_POST);
+        return $heidelpayResponse;
+    }
+
+
+
 
     public function ccCallback(Request $request) {
 
@@ -161,6 +166,7 @@ class SubscriptionController extends Controller
         $cc->getRequest()->getAccount()->setNumber($request->number);
         $cc->getRequest()->getAccount()->setVerification($request->verification);
 
+
         $cc->registration(
             HEIDELPAY_PHP_PAYMENT_API_URL,
             // PaymentFrameOrigin - uri of your application like https://dev.heidelpay.com
@@ -171,12 +177,6 @@ class SubscriptionController extends Controller
             'style.css'   // CSSPath - css url to style the Heidelpay payment frame
         );
 
-//        echo '<pre>';
-//        print_r($cc);
-//        echo '</pre>';
-//        die();
-
-//        return $cc->getResponse()->getPaymentFormUrl();
 
         try {
             $cc->capture($paymentReference);
