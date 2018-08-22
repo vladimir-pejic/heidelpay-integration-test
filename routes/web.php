@@ -23,6 +23,10 @@ Route::get('/cciframe', 'SubscriptionController@cciframe')->name('cciframe');
 Route::post('/cciframe/response', 'SubscriptionController@cciframeResponse')->name('cciframe.response');
 
 
+// WireCard
+Route::get('/wirecard', function () { return view('wirecard'); })->name('wirecard.get');
+
+
 // Custom form for Heidelpay
 Route::get('/cc', function () { return view('cc'); })->name('cc.get');
 Route::post('/cc', 'SubscriptionController@ccPost')->name('cc.post');

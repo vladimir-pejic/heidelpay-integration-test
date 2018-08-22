@@ -195,4 +195,13 @@ class SubscriptionController extends Controller
             return 'nema ni pravog errora';
         }
     }
+
+
+    public function wirecardPost(Request $request) {
+
+        $url = 'https://api-test.wirecard.com/engine/rest/payments';
+        //$url = 'https://api.wirecard.com/engine/rest/payments';
+
+
+    }
 }

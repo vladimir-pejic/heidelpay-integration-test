@@ -52,6 +52,9 @@
                             </li>
                         @else
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('wirecard.get') }}">Wirecard</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('cciframe') }}">CC iframe</a>
                             </li>
                             <li class="nav-item dropdown">
