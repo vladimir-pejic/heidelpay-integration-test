@@ -25,6 +25,7 @@ Route::post('/cciframe/response', 'SubscriptionController@cciframeResponse')->na
 
 // WireCard
 Route::get('/wirecard', function () { return view('wirecard'); })->name('wirecard.get');
+Route::post('/wirecard', 'SubscriptionController@wirecardPost')->name('wirecard.post');
 
 
 // Custom form for Heidelpay
