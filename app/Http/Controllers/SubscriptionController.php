@@ -199,22 +199,45 @@ class SubscriptionController extends Controller
 
     public function wirecardGet() {
 
-        /*
-         * v1
-         */
-//        $timestamp = Carbon::now()->format('Ymdhis');
-        $merchant_id = '7a6dd74f-06ab-4f3f-a864-adc52687270a'; // Test Merchant ID
-        $merchant_ref = 'payment' . rand(11111,99999) . '-' . time() . '-' . rand(1000,10000);
+        $timestamp = Carbon::now()->format('Ymdhis');
+        $merchant_id = '5612f2ca-344e-41cc-8ed1-be1523c38182'; // MBP Merchant ID
+        $merchant_secret = '61c14fec-3e06-4563-9574-c75b209d10fb'; // MBP secret key
+        $merchant_ref = rand(11111,99999) . '-' . time() . '-' . rand(1000,10000);
+        $type = 'purchase';
+        $amount = '1.00';
+        $currency = 'EUR';
+
 
         /*
-         * v2
+         * Object to be sent on frontend request, via deprecated method.
          */
-        $request_url = 'https://wpp-test.wirecard.com/api/payment/register';
+//        $request_signature = hash('sha256', $timestamp.$merchant_ref.$merchant_id.$type.$amount.$currency.$merchant_secret);
+//
+//        $requestData = json_encode([
+//            "request_id" => $merchant_ref,
+//            "request_time_stamp" => $timestamp,
+//            "merchant_account_id" => $merchant_id,
+//            "transaction_type" => $type,
+//            "requested_amount" => $amount,
+//            "requested_amount_currency" => $currency,
+//            "ip_address" => "127.0.0.1",
+//            "request_signature" => $request_signature,
+//            "payment_method" => "creditcard"
+//        ]);
+
+
+        /*
+         * Based on documentation, this test request works.
+         */
+         $pass = base64_encode('meinbuch_2018!:788bhv3wMc4');
+        $test_merchant_id = '7a6dd74f-06ab-4f3f-a864-adc52687270a'; // Test Merchant ID
+        $request_url = 'https://wpp.wirecard.com/api/payment/register';
         $headers = array(
             'Content-Type: application/json',
-            'Authorization: Basic ' . 'NzAwMDAtQVBJREVNTy1DQVJEOm9oeXNTMC1kdmZNeA=='
+            'Authorization: Basic ' . $pass
         );
 
+        // via documentation (seamless)
         $request_json = json_encode([
             "payment" => [
                 "merchant-account-id" => [
@@ -223,12 +246,12 @@ class SubscriptionController extends Controller
                 "request-id" => $merchant_ref,
                 "transaction-type" => "authorization",
                 "requested-amount" => [
-                    "value" => 1,
+                    "value" => 0.1,
                     "currency" => "EUR"
                 ],
                 "account-holder" => [
-                   "first-name" => "John",
-                   "last-name" => "Doe",
+                   "first-name" => "Vladimir",
+                   "last-name" => "Pejic",
                 ],
                 "payment-methods" => [
                     "payment-method" => [
@@ -256,6 +279,7 @@ class SubscriptionController extends Controller
 
         $result = json_decode($string, true);
 
+
         return view('wirecard_form')->with(compact('result'));
 
     }
@@ -267,9 +291,9 @@ class SubscriptionController extends Controller
 //        $merchant_id = '07edc10b-d3f9-4d12-901f-0db7f4c7e75c'; // Test Merchant ID
 
         $url = 'https://api.wirecard.com/engine/rest/paymentmethods/'; // XML or JSON endpoint
-        $merchant_id = '61c14fec-3e06-4563-9574-c75b209d10fb';
+        $merchant_id = '5612f2ca-344e-41cc-8ed1-be1523c38182';
 
-        $merchant_ref = 'payment' . rand(11111,99999) . '-' . time() . '-' . rand(1000,10000);
+        $merchant_ref = rand(11111,99999) . '-' . time() . '-' . rand(1000,10000);
 
         $xml_request = '<?xml version="1.0" encoding="utf-8"?>
                         <payment xmlns="http://www.elastic-payments.com/schema/payment">
@@ -304,7 +328,7 @@ class SubscriptionController extends Controller
         $ch = curl_init();
         $headers = array(
             'Content-Type: application/xml',
-            'Authorization: Basic '. base64_encode("70000-APILUHN-CARD:8mhwavKVb91T")
+            'Authorization: Basic '. base64_encode("meinbuch_2018!:788bhv3wMc4")
         );
 
         curl_setopt($ch, CURLOPT_POST, 1);

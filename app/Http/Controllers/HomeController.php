@@ -35,4 +35,8 @@ class HomeController extends Controller
         $pdf = PDF::loadView('pdf');
         return $pdf->stream('document.pdf');
     }
+
+    public function dashboard() {
+        return 'kurac';
+    }
 }

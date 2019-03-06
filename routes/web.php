@@ -17,6 +17,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::group([
+    'prefix'     => '/{tenant}',
+    'middleware' => \App\Http\Middleware\IdentifyTenant::class,
+    'as'         => 'tenant:',
+], function () {
+    Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+});
+
 
 // Stock form for Heidelpay
 Route::get('/cciframe', 'SubscriptionController@cciframe')->name('cciframe');

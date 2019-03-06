@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'subscription_id', 'subscription_date'
+        'name', 'email', 'password', 'subscription_id', 'subscription_date', 'domain', 'subdomain'
     ];
 
     /**
@@ -33,6 +33,11 @@ class User extends Authenticatable
 
     public function invoices() {
         return $this->hasMany('App\Invoice', 'user_id')->orderBy('created_at', 'asc');
+    }
+
+    public function route($name, $parameters = []) {
+        $host = $this->domain ?? $this->subdomain;
+        return 'https://' . $host . app('url')->route($name, $parameters, false);
     }
 
 
