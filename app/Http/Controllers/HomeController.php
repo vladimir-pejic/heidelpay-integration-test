@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Subscription;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
@@ -38,5 +39,11 @@ class HomeController extends Controller
 
     public function dashboard() {
         return 'kurac';
+    }
+
+    public function domains($name)
+    {
+        $user = User::where('name', $name)->firstOrFail();
+        return view('home', compact('user'));
     }
 }

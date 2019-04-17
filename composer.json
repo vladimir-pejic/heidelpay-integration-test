@@ -9,13 +9,15 @@
         "academe/omnipay-wirecard": " ~3.0",
         "fideloper/proxy": "^4.0",
         "heidelpay/php-payment-api": "dev-master",
+        "joedixon/laravel-translation": "^0.2.0",
         "laravel/cashier": "~7.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
         "league/omnipay": "3",
         "niklasravnsborg/laravel-pdf": "^2.0",
-        "omnipay/paypal": "^3.0"
+        "omnipay/paypal": "^3.0",
+        "romegadigital/multitenancy": "^2.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
